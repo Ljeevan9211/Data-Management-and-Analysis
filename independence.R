@@ -1,7 +1,4 @@
-##---------load camtrapR package-------------
-library('camtrapR')
-
-#loading the recordTable
+#l oading the recordTable
 RTable <- read.csv("RTable_Recleaned.csv", stringsAsFactors=FALSE)
 ##  save(RTable, file = "RTable.Rdata")
 ## load("RTable.Rdata")
@@ -30,8 +27,6 @@ nul <- rbind(nul, sub.sps)
 ## making sure that the order worked
 View(nul)
 str(nul)
-
-
 
 ## now we are moving to get the independent images. Generating TRUE in the Independence columns
 RT <- RTable[0,] 
@@ -70,58 +65,3 @@ View(clean)
 # Saving the file as .csv
 write.csv(clean, "clean.csv")
 save(clean, file = "clean.Rdata")
-
-# organizing your data
-activityDensity(recordTable = clean,
-                allSpecies = TRUE, 
-		    speciesCol = "Species")
-
-## ------------------------------------------------------------------------
-activityHistogram (recordTable = clean,
-                allSpecies = TRUE,
-  		    speciesCol = "Species")
-
-
-## ------------------------------------------------------------------------
-activityRadial(recordTable = clean,
-                allSpecies = TRUE,
-  		    speciesCol = "Species",
-               lwd          = 3       # adjust line with of the plot
-)
-
-## ------------------------------------------------------------------------
-activityRadial(recordTable       = clean,
-               allSpecies        = TRUE,
-               speciesCol        = "Species",
-               recordDateTimeCol = "DateTimeOriginal",
-               plotR             = TRUE,
-               writePNG          = FALSE,
-               lwd               = 3,
-               rp.type           = "p"      # plot type = polygon
-)
-
-activityOverlap (recordTable = clean,
-                 speciesA    ="Fishing Cat",
-                 speciesB    = "Jungle Cat",
-                 writePNG    = FALSE,
-                 plotR       = TRUE,
-                 add.rug     = TRUE,
-			main ="Activity overlap of Fishing Cat and Jungle Cat"
-)
-activityOverlap (recordTable = clean,
-                 speciesA    ="Fishing Cat",
-                 speciesB    = "Large Indian Civet",
-                 writePNG    = FALSE,
-                 plotR       = TRUE,
-                 add.rug     = TRUE,
-			main ="Activity overlap of Fishing Cat and Large Indian Civet"
-)
-
-activityOverlap (recordTable = clean,
-                 speciesA    ="Fishing Cat",
-                 speciesB    = "Golden Jackal",
-                 writePNG    = FALSE,
-                 plotR       = TRUE,
-                 add.rug     = TRUE,
-			main ="Activity overlap of Fishing Cat and Golden Jackal"
-)
