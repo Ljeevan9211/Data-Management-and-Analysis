@@ -1,5 +1,5 @@
-#l oading the recordTable
-RTable <- read.csv("RTable_Recleaned.csv", stringsAsFactors=FALSE)
+# loading the recordTable
+RTable <- read.csv("RTable.csv", stringsAsFactors=FALSE)
 ##  save(RTable, file = "RTable.Rdata")
 ## load("RTable.Rdata")
 head(RTable)
@@ -19,7 +19,6 @@ sub.sps$DateTimeOriginal <- as.POSIXct(sub.sps$DateTimeOriginal,
 							tz ="Asia/Katmandu")  
 # converting the datetime time with correct timezone
 sub.sps <- sub.sps[do.call(order,sub.sps),]  #ordering the datetime with order of the time
-
 nul <- rbind(nul, sub.sps)
 }
 }
