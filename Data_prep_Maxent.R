@@ -1,3 +1,4 @@
+# Codes modified from https://www.azavea.com/blog/2018/10/09/preparing-data-for-maxent-species-distribution-modeling-using-r/
 # Installl necessary packages and libraries
 library(sf)
 library(raster)
