@@ -1,15 +1,15 @@
 library(Rmisc) # load package for summarySE function
 
 ######################### Simulating dataset first ###########################
-DF <- data.frame(nrow= 100, ncol = 3) 	# data frame to put our simulated data
+DF <- data.frame(nrow= 100, ncol = 3) 				# data frame to put our simulated data
 set.seed(c(1,2))						# to have same randomized datasets
 
 # Now we will simulate two datasets, for length and girth measurements
-DF[1:100,2] <- cbind(as.integer(c(rnorm(50, 150, 50),rnorm(50, 75, 25))))		# first 50 lengths come from snakes in undisturbed habitat and next 50 from disturbed
+DF[1:100,2] <- cbind(as.integer(c(rnorm(50, 150, 50),rnorm(50, 75, 25))))	# first 50 lengths come from snakes in undisturbed habitat and next 50 from disturbed
 DF[1:100,3] <- cbind(abs(as.integer(c(rnorm(50, 40, 25),rnorm(50, 25, 15 )))))	# first 50 girths come from snakes in undisturbed habitat and next 50 from disturbed
 
 # Naming the data.frame
-DF[1:50,1] <- "Undisturbed" 						# first 50 come from undisturbed habitats
+DF[1:50,1] <- "Undisturbed" 					# first 50 come from undisturbed habitats
 DF[51:100,1] <- "Disturbed" 					# next 50 from disturbed habitats
 colnames(DF) <- c("Habitat",  "girth", "Length")
 
@@ -20,7 +20,7 @@ dbh <- summarySE(DF, measurevar="girth", groupvars = c("Habitat"))   	# girth ca
 
 # Merge them all in a data.frame for ease
 Master <- data.frame(ID= length[,1], length = length[,3], lt.se = length[,5],
-					girth = girth[,3], girth.se = girth[,5], no = c(1,2))
+		girth = girth[,3], girth.se = girth[,5], no = c(1,2))
 
 ######################### Here, we create a plot with two different y-axes ###########################
 # Set the margins for plot
