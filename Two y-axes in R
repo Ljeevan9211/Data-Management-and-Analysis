@@ -1,0 +1,61 @@
+library(Rmisc) # load package for summarySE function
+
+######################### Simulating dataset first ###########################
+DF <- data.frame(nrow= 100, ncol = 3) 	# data frame to put our simulated data
+set.seed(c(1,2))						# to have same randomized datasets
+
+# Now we will simulate two datasets, for height and DBH measurements
+DF[1:100,2] <- cbind(as.integer(c(rnorm(50, 150, 50),rnorm(50, 75, 25))))		# first 50 come from nested trees and next 50 from random trees
+DF[1:100,3] <- cbind(abs(as.integer(c(rnorm(50, 40, 25),rnorm(50, 25, 15 )))))	# first 50 come from nested trees and next 50 from random trees
+
+# Naming the data.frame
+DF[1:50,1] <- "Nest" 						# first 50 come from nested trees
+DF[51:100,1] <- "Random" 					# next 50 from random trees
+colnames(DF) <- c("Tree",  "DBH", "Height")
+
+# Finding errors
+height <- summarySE(DF, measurevar="Height", groupvars=c("Tree"))   # height categorized by tree characteristics
+dbh <- summarySE(DF, measurevar="DBH", groupvars = c("Tree"))   	# DBH categorized by tree characteristics
+
+
+# Merge them all in a data.frame for ease
+Master <- data.frame(ID= height[,1], height = height[,3], ht.se = height[,5],
+					dbh = dbh[,3], dbh.se = dbh[,5], no = c(1,2))
+
+######################### Here, we create a plot with two different y-axes ###########################
+# Set the margins for plot
+par(mar = c(5,5,2,5))								
+
+# Plot the DBH
+with(Master, plot(Master$no, Master$dbh, type = "p", 	
+		col = 'black', xaxt ='n', xlim = c(0,3),
+		pch = 19, cex = 1, ylim = c(0,200), 
+		ylab = "DBH (cm)", xlab = "Tree"))
+# Add error bars
+arrows(Master$no, Master$dbh+Master$dbh.se,Master$no, 
+		Master$dbh-Master$dbh.se,
+	code = 3, angle = 90, length = 0.1)
+
+# Next, we plot the second graph on top but with any axis labels
+par(new = T)
+# Plot the heights
+with(Master, plot(Master$no, Master$height, col = 'red', 
+		pch = 19, cex = 1,ylim = c(10,60),
+		axes=F, xlab=NA, ylab=NA, xlim = c(0,3)))
+# Add error bars		
+arrows(Master$no, Master$height+Master$ht.se,Master$no, 
+		Master$height-Master$ht.se,	code = 3, angle = 90, 
+		length = 0.1, col = "red")
+# Add second y-axis
+axis(side = 4, col ="red", col.ticks = "red", col.axis = "red")
+mtext(side = 4, line = 3, 'Height (m)', col= "red")
+# Add legend
+legend("topleft",
+       legend=c("DBH", "Height"), bty ="n",
+        pch=c(16, 16),	col=c("black", "red"))
+
+# Finally, to get labels in x-axis
+xtick<-seq(1:2)
+axis(side=1, at=xtick, labels = FALSE)
+text(x=xtick,  par("usr")[3], 
+     labels = c("Nest","Random"), srt = 0, pos = 1, xpd = TRUE)
