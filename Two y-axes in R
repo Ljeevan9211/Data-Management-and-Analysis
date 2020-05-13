@@ -11,11 +11,11 @@ DF[1:100,3] <- cbind(abs(as.integer(c(rnorm(50, 40, 25),rnorm(50, 25, 15 )))))	#
 # Naming the data.frame
 DF[1:50,1] <- "Undisturbed" 					# first 50 come from undisturbed habitats
 DF[51:100,1] <- "Disturbed" 					# next 50 from disturbed habitats
-colnames(DF) <- c("Habitat",  "girth", "Length")
+colnames(DF) <- c("Habitat",  "Length", "girth")
 
 # Finding errors
-length <- summarySE(DF, measurevar="Length", groupvars=c("Habitat"))   # length categorized by tree characteristics
-dbh <- summarySE(DF, measurevar="girth", groupvars = c("Habitat"))   	# girth categorized by tree characteristics
+length <- summarySE(DF, measurevar="Length", groupvars=c("Habitat"))   # length categorized by habitat
+girth <- summarySE(DF, measurevar="girth", groupvars = c("Habitat"))   	# girth categorized by habitat
 
 
 # Merge them all in a data.frame for ease
@@ -29,7 +29,7 @@ par(mar = c(5,5,2,5))
 # Plot the girth
 with(Master, plot(Master$no, Master$girth, type = "p", 	
 		col = 'black', xaxt ='n', xlim = c(0,3),
-		pch = 19, cex = 1, ylim = c(0,200), 
+		pch = 19, cex = 1, ylim = c(0,60), 
 		ylab = "Girth (cm)", xlab = "Habitat of snake"))
 # Add error bars
 arrows(Master$no, Master$girth+Master$girth.se,Master$no, 
@@ -40,7 +40,7 @@ arrows(Master$no, Master$girth+Master$girth.se,Master$no,
 par(new = T)
 # Plot the lengths
 with(Master, plot(Master$no, Master$length, col = 'red', 
-		pch = 19, cex = 1,ylim = c(10,60),
+		pch = 19, cex = 1,ylim = c(0,200),
 		axes=F, xlab=NA, ylab=NA, xlim = c(0,3)))
 # Add error bars		
 arrows(Master$no, Master$length+Master$lt.se,Master$no, 
@@ -58,4 +58,4 @@ legend("topleft",
 xtick<-seq(1:2)
 axis(side=1, at=xtick, labels = FALSE)
 text(x=xtick,  par("usr")[3], 
-     labels = c("Undisturbed","Disturbed"), srt = 0, pos = 1, xpd = TRUE)
+     labels = Master$ID, srt = 0, pos = 1, xpd = TRUE)
